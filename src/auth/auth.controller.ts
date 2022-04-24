@@ -17,26 +17,26 @@ export class AuthController {
   @UseGuards(KakaoAuthGuard)
   @Get('/kakao')
   @HttpCode(200)
-  authKakao(@Request() req) {
+  authKakao(@Request() _) {
     return HttpStatus.OK;
   }
 
   @UseGuards(GoogleAuthGuard)
   @Get('/google')
   @HttpCode(200)
-  authGoogle(@Request() req) {
+  authGoogle(@Request() _) {
     return HttpStatus.OK;
   }
 
   @UseGuards(KakaoAuthGuard)
   @Get('/kakao/redirect')
   authKakaoLogin(@Request() req) {
-    return this.authService.kakaoLogin(req);
+    return this.authService.loginWithKakao(req);
   }
 
   @UseGuards(GoogleAuthGuard)
   @Get('/google/redirect')
   authGoogleLogin(@Request() req) {
-    return this.authService.googleLogin(req);
+    return this.authService.loginWithGoogle(req);
   }
 }

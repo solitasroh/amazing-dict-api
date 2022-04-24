@@ -1,8 +1,8 @@
 import { Profile, Strategy } from 'passport-kakao';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { KakaoProfileDto } from './dto/kakao-profile.dto';
+import { Injectable } from '@nestjs/common';
+import { AuthService } from '../auth.service';
+import { KakaoProfileDto } from '../dto/kakao-profile.dto';
 
 @Injectable()
 export class KakaoStrategy extends PassportStrategy(Strategy) {
@@ -24,8 +24,8 @@ export class KakaoStrategy extends PassportStrategy(Strategy) {
     console.log(refreshToken);
 
     const user: KakaoProfileDto = {
-      nickname: profile._json.kakao_account.profile.nickname,
-      id: profile.id,
+      nickname: profile.username,
+      id: parseInt(profile.id),
       thumbnail_image_url:
         profile._json.kakao_account.profile.thumbnail_image_url,
       profile_image_url: profile._json.kakao_account.profile.profile_image_url,
