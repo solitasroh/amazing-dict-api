@@ -8,6 +8,42 @@ type LoginResult {
   redirectUrl: String!
 }
 
+type Game {
+  id: Int!
+  title: String!
+  singer: String!
+  preSectionLyrics: String!
+  postSectionLyrics: String!
+  questionLyrics: String!
+  prePlaySection: String!
+  preSectionPlayStartTime: Int!
+  preSectionPlayEndTime: Int!
+  questionSectionPlayStartTime: Int!
+  questionSectionPlayEndTime: Int!
+  songYoutubeLinkUrl: String!
+  musicFileLinkUrl: String!
+}
+
 type Query {
+  game(id: Float!): Game!
   Login: LoginResult!
+}
+
+type Mutation {
+  createCame(data: GameCreateInput!): Game!
+}
+
+input GameCreateInput {
+  title: String
+  singer: String
+  preSectionLyrics: String
+  postSectionLyrics: String
+  questionLyrics: String
+  prePlaySection: String
+  playTime: String
+  preSectionPlayStartTime: Int
+  preSectionPlayEndTime: Int
+  questionSectionPlayStartTime: Int
+  questionSectionPlayEndTime: Int
+  songYoutubeLinkUrl: String
 }

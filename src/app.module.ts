@@ -8,6 +8,11 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PrismaService } from './prisma/prisma.service';
+import { GameResolver } from './game/game.resolver';
+import { GameService } from './game/game.service';
+import { S3FileService } from './s3-file/s3-file.service';
+import { GameModule } from './game/game.module';
+import { S3FileModule } from './s3-file/s3-file.module';
 
 @Module({
   imports: [
@@ -18,8 +23,16 @@ import { PrismaService } from './prisma/prisma.service';
     }),
     AuthModule,
     UsersModule,
+    GameModule,
+    S3FileModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [
+    AppService,
+    PrismaService,
+    GameResolver,
+    GameService,
+    S3FileService,
+  ],
 })
 export class AppModule {}

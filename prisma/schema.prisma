@@ -43,3 +43,19 @@ model User {
   kakaoId      Int?        @unique
   googleId     Int?        @unique
 }
+
+model Game {
+  id                           Int    @id @default(autoincrement())
+  title                        String
+  Singer                       String
+  preSectionLyrics             String
+  postSectionLyrics            String
+  questionLyrics               String
+  prePlaySection               String
+  preSectionPlayStartTime      Int
+  preSectionPlayEndTime        Int
+  questionSectionPlayStartTime Int
+  questionSectionPlayEndTime   Int
+  songYoutubeLinkUrl           String
+  musicFileLinkUrl             String
+}
