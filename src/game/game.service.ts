@@ -1,65 +1,75 @@
 import { Injectable } from '@nestjs/common';
-import { Game } from './game';
-import * as fs from 'fs';
+
 import { S3FileService } from '../s3-file/s3-file.service';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const yt = require('yt-converter');
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require('path');
+import { PrismaService } from '../prisma/prisma.service';
+import { Game } from '@prisma/client';
+import { GameCreateInput } from './game.resolver';
 
 @Injectable()
 export class GameService {
-  constructor(private s3Service: S3FileService) {}
-
-  async createGame(): Promise<Game> {
-    return null;
+  constructor(
+    private s3Service: S3FileService,
+    private prisma: PrismaService,
+  ) {}
+  async game(id: number): Promise<Game> {
+    return await this.prisma.game.findUnique({ where: { id } });
+  }
+  async allGames(): Promise<Array<Game>> {
+    console.log('all game');
+    return await this.prisma.game.findMany();
   }
 
-  async makeMp3(linkUrl: string): Promise<string> {
-    const infos = await yt.getInfo(linkUrl);
-
-    infos.formatsAudio.map((audio) => {
-      console.log(audio.audioQuality, audio.itag);
+  async createGame({
+    title,
+    singer,
+    songYoutubeLinkUrl,
+  }: GameCreateInput): Promise<Game> {
+    const duplicated = await this.prisma.game.findFirst({
+      where: {
+        title,
+        singer,
+      },
     });
 
-    const filtered = infos.formatsAudio
-      .filter((format) => format.audioQuality === 'AUDIO_QUALITY_LOW')
-      .pop();
+    if (duplicated != null) {
+      return await this.prisma.game.update({
+        where: {
+          id: duplicated.id,
+        },
+        data: {
+          songYoutubeLinkUrl,
+        },
+      });
+    }
 
-    console.log(filtered);
-    const fileName = __dirname + `/${infos.title}.mp3`;
-    console.log(__dirname + `/${infos.title}.mp3`);
-
-    const pathname = path.resolve(process.cwd(), 'temp', `${infos.title}.mp3`);
-    try {
-      fs.mkdirSync('temp');
-    } catch {}
-
-    await yt.convertAudio(
-      {
-        url: linkUrl,
-        itag: filtered.itag,
-        directoryDownload: 'temp',
+    return await this.prisma.game.create({
+      data: {
+        title,
+        singer,
+        songYoutubeLinkUrl,
       },
-      () => {
-        console.log('data ...');
-      },
-      () => {
-        console.log(pathname);
-        if (fs.existsSync(pathname)) {
-          console.log('file is exists');
-        }
-        const files = fs.readdirSync(path.resolve(process.cwd(), 'temp'));
-        console.log(files);
-        const fi = path.resolve(process.cwd(), 'temp', files[0]);
-        if (fs.existsSync(fi)) {
-          this.s3Service.uploadAsync(1, infos.title, fi);
-        }
-      },
-    );
+    });
+  }
 
-    return 'test';
+  async writeGameFileLink(id: number, link: string): Promise<Game> {
+    return await this.prisma.game.update({
+      where: { id },
+      data: {
+        musicFileLinkUrl: link,
+      },
+    });
+  }
+
+  async updateGame(id: number, data: Game) {
+    return await this.prisma.game.update({
+      where: { id },
+      data: data,
+    });
+  }
+
+  async deleteGame(id: number) {
+    return await this.prisma.game.delete({
+      where: { id },
+    });
   }
 }

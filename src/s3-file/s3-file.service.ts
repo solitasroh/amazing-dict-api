@@ -4,8 +4,6 @@ import { readFileSync } from 'fs';
 
 @Injectable()
 export class S3FileService {
-  private readonly FILE_LIMIT_SIZE = 3145728;
-
   private AWS_S3_BUCKET = process.env.AWS_S3_BUCKET;
   private s3: AWS.S3;
 
@@ -19,15 +17,17 @@ export class S3FileService {
 
   async uploadAsync(id, fileName: string, filePath: string): Promise<string> {
     const fileContents = readFileSync(filePath);
-    console.log(`${this.AWS_S3_BUCKET}, ${id}-${Date.now()}-${fileName}`);
+    const fileKey = `${id}-${Date.now()}-test.mp3`;
+
+    console.log(`FILE: ${fileKey}`);
     const params = {
       Bucket: this.AWS_S3_BUCKET,
-      Key: `${id}-${Date.now()}-test.mp3`,
-
+      Key: fileKey,
+      ACL: 'public-read',
       Body: fileContents,
     };
     const { Location } = await this.s3.upload(params).promise();
-    console.log(Location);
+    console.log(`S3 URL: ${Location}`);
     return Location;
   }
 }

@@ -2,35 +2,31 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type LoginResult {
-  accessToken: String!
-  refreshToken: String!
-  redirectUrl: String!
-}
-
 type Game {
   id: Int!
   title: String!
   singer: String!
-  preSectionLyrics: String!
-  postSectionLyrics: String!
-  questionLyrics: String!
-  prePlaySection: String!
-  preSectionPlayStartTime: Int!
-  preSectionPlayEndTime: Int!
-  questionSectionPlayStartTime: Int!
-  questionSectionPlayEndTime: Int!
-  songYoutubeLinkUrl: String!
+  preSectionLyrics: String
+  postSectionLyrics: String
+  questionLyrics: String
+  prePlaySection: String
+  preSectionPlayStartTime: Int
+  preSectionPlayEndTime: Int
+  questionSectionPlayStartTime: Int
+  questionSectionPlayEndTime: Int
+  songYoutubeLinkUrl: String
   musicFileLinkUrl: String!
 }
 
 type Query {
   game(id: Float!): Game!
-  Login: LoginResult!
+  games: [Game!]
 }
 
 type Mutation {
-  createCame(data: GameCreateInput!): Game!
+  createGame(data: GameCreateInput!): Game!
+  updateGame(data: GameCreateInput!, id: Float!): Game!
+  deleteGame(id: Float!): Game!
 }
 
 input GameCreateInput {
@@ -46,4 +42,5 @@ input GameCreateInput {
   questionSectionPlayStartTime: Int
   questionSectionPlayEndTime: Int
   songYoutubeLinkUrl: String
+  musicFileLinkUrl: String
 }

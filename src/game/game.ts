@@ -1,5 +1,4 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { GraphQLString } from 'graphql';
 
 @ObjectType()
 export class Game {
@@ -12,23 +11,23 @@ export class Game {
   @Field()
   singer: string;
 
-  @Field()
+  @Field({ nullable: true })
   preSectionLyrics: string;
-  @Field()
+  @Field({ nullable: true })
   postSectionLyrics: string;
-  @Field()
+  @Field({ nullable: true })
   questionLyrics: string;
-  @Field()
+  @Field({ nullable: true })
   prePlaySection: string;
-  @Field((type) => Int)
+  @Field(() => Int, { nullable: true })
   preSectionPlayStartTime: number;
-  @Field((type) => Int)
+  @Field(() => Int, { nullable: true })
   preSectionPlayEndTime: number;
-  @Field((type) => Int)
+  @Field(() => Int, { nullable: true })
   questionSectionPlayStartTime: number;
-  @Field((type) => Int)
+  @Field(() => Int, { nullable: true })
   questionSectionPlayEndTime: number;
-  @Field()
+  @Field({ nullable: true })
   songYoutubeLinkUrl: string;
   @Field()
   musicFileLinkUrl: string;

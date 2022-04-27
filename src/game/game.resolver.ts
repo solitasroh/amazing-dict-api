@@ -3,18 +3,16 @@ import {
   Resolver,
   Query,
   Mutation,
-  Context,
   InputType,
   Field,
   Int,
 } from '@nestjs/graphql';
 import { Game } from './game';
 import { GameService } from './game.service';
-import { S3FileService } from '../s3-file/s3-file.service';
-import * as fs from 'fs';
+import { makeMp3 } from '../utils/YoutubeUtility';
 
 @InputType()
-class GameCreateInput {
+export class GameCreateInput {
   @Field({ nullable: true })
   title: string;
 
@@ -36,39 +34,60 @@ class GameCreateInput {
   @Field({ nullable: true })
   playTime: string;
 
-  @Field((type) => Int, { nullable: true })
+  @Field(() => Int, { nullable: true })
   preSectionPlayStartTime: number;
 
-  @Field((type) => Int, { nullable: true })
+  @Field(() => Int, { nullable: true })
   preSectionPlayEndTime: number;
 
-  @Field((type) => Int, { nullable: true })
+  @Field(() => Int, { nullable: true })
   questionSectionPlayStartTime: number;
 
-  @Field((type) => Int, { nullable: true })
+  @Field(() => Int, { nullable: true })
   questionSectionPlayEndTime: number;
 
   @Field({ nullable: true })
   songYoutubeLinkUrl: string;
+
+  @Field({ nullable: true })
+  musicFileLinkUrl: string;
 }
 
 @Resolver(Game)
 export class GameResolver {
-  constructor(
-    private gamesService: GameService,
-    private s3Service: S3FileService,
-  ) {}
+  constructor(private gamesService: GameService) {}
 
-  @Query((returns) => Game, { name: 'game' })
-  async game(@Args('id') id: number): Promise<Game> {
-    console.log('get game');
-    return new Game();
+  @Query(() => Game, { name: 'game' })
+  game(@Args('id') id: number): Promise<Game> {
+    return this.gamesService.game(id);
   }
 
-  @Mutation((returns) => Game)
-  async createCame(@Args('data') data: GameCreateInput, @Context() ctx) {
-    const linkS3 = await this.gamesService.makeMp3(data.songYoutubeLinkUrl);
-    console.log(linkS3);
-    return this.gamesService.createGame();
+  @Query(() => [Game], { nullable: true })
+  games(): Promise<Game[]> {
+    return this.gamesService.allGames();
+  }
+
+  @Mutation(() => Game)
+  async createGame(@Args('data') data: GameCreateInput) {
+    const game = await this.gamesService.createGame(data);
+
+    await makeMp3(game.id, data.songYoutubeLinkUrl, async (fileLink) => {
+      await this.gamesService.writeGameFileLink(game.id, fileLink);
+    });
+
+    return game;
+  }
+
+  @Mutation(() => Game)
+  async updateGame(
+    @Args('data') data: GameCreateInput,
+    @Args('id') id: number,
+  ) {
+    await this.gamesService.updateGame(id, { id, ...data });
+  }
+
+  @Mutation(() => Game)
+  async deleteGame(@Args('id') id: number) {
+    return await this.gamesService.deleteGame(id);
   }
 }

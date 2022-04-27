@@ -2,6 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import { PrismaService } from './prisma/prisma.service';
+
+console.log('process env : ', process.env.NODE_ENV);
 
 dotenv.config({
   path: path.resolve(
@@ -9,12 +12,16 @@ dotenv.config({
       ? '.production.env'
       : process.env.NODE_ENV === 'stage'
       ? '.stage.env'
-      : '.development.env',
+      : '.env',
   ),
 });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const prismaService: PrismaService = app.get(PrismaService);
+  await prismaService.enableShutdownHooks(app);
+
   await app.listen(3000);
 }
 bootstrap();

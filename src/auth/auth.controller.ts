@@ -17,14 +17,14 @@ export class AuthController {
   @UseGuards(KakaoAuthGuard)
   @Get('/kakao')
   @HttpCode(200)
-  authKakao(@Request() _) {
+  authKakao() {
     return HttpStatus.OK;
   }
 
   @UseGuards(GoogleAuthGuard)
   @Get('/google')
   @HttpCode(200)
-  authGoogle(@Request() _) {
+  authGoogle() {
     return HttpStatus.OK;
   }
 
