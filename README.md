@@ -1,35 +1,20 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Amazing-dictation backend api server
 
-## Installation
+## Installation (순차적으로 진행)
 
 ```bash
 $ npm install
+# db 생성
+$ docker-compose up -d # 이후 database 생성 필요
+
+# db migration
+$ npm run migrate
+
+# db generate
+$ npm run generate 
 ```
 
 ## Running the app
@@ -43,31 +28,40 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+
+
 ```
 
-## Test
+## Docker (Postgresql)
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# execute docker image (daemon)
+$ docker-compose up -d
 ```
 
-## Support
+## .env
+```dotenv
+# google login oauth 
+GOOGLE_CLIENT_ID=<xxxxxxxxxxxx>
+GOOGLE_SECRET=<xxxxxxxxxxxx>
+GOOGLE_CLIENT_REDIRECT=<xxxxxxxxxxxx>
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+#kakao login oauth
+KAKAO_CLIENT_ID=<xxxxxxxxxxxx>
+KAKAO_CLIENT_SECRET=<xxxxxxxxxxxx>
+KAKAO_CLIENT_REDIRECT=<xxxxxxxxxxxx>
 
-## Stay in touch
+# aws s3 (music data)
+AWS_S3_BUCKET=<xxxxxxxxxxxx>
+AWS_ACCESS_KEY_ID=<xxxxxxxxxxxx>
+AWS_SECRET_ACCESS_KEY=<xxxxxxxxxxxx>
+AWS_REGION=<xxxxxxxxxxxx>
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+# database
+DB_USER_ID=<db 사용자 id>
+DB_USER_PASSWORD=<db 사용자 패스워드>
+POSTGRES_HOME_DIR=<local db backup 경로>
+DB_PORT=<db port>
+DB_NAME=<db name>
+DATABASE_URL="postgresql://<db_user_id>:<db_user_password>@localhost:<db_port>/<db_name>?schema=public"
+```
