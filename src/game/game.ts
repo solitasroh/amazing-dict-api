@@ -29,6 +29,6 @@ export class Game {
   questionSectionPlayEndTime: number;
   @Field({ nullable: true })
   songYoutubeLinkUrl: string;
-  @Field()
+  @Field({ nullable: true })
   musicFileLinkUrl: string;
 }

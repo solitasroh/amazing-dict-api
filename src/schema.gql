@@ -15,7 +15,7 @@ type Game {
   questionSectionPlayStartTime: Int
   questionSectionPlayEndTime: Int
   songYoutubeLinkUrl: String
-  musicFileLinkUrl: String!
+  musicFileLinkUrl: String
 }
 
 type Query {
@@ -36,7 +36,6 @@ input GameCreateInput {
   postSectionLyrics: String
   questionLyrics: String
   prePlaySection: String
-  playTime: String
   preSectionPlayStartTime: Int
   preSectionPlayEndTime: Int
   questionSectionPlayStartTime: Int

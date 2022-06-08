@@ -31,9 +31,6 @@ export class GameCreateInput {
   @Field({ nullable: true })
   prePlaySection: string;
 
-  @Field({ nullable: true })
-  playTime: string;
-
   @Field(() => Int, { nullable: true })
   preSectionPlayStartTime: number;
 
