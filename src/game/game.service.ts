@@ -19,15 +19,11 @@ export class GameService {
     return await this.prisma.game.findMany();
   }
 
-  async createGame({
-    title,
-    singer,
-    songYoutubeLinkUrl,
-  }: GameCreateInput): Promise<Game> {
+  async createGame(data: GameCreateInput): Promise<Game> {
     const duplicated = await this.prisma.game.findFirst({
       where: {
-        title,
-        singer,
+        title: data.title,
+        singer: data.singer,
       },
     });
 
@@ -36,18 +32,12 @@ export class GameService {
         where: {
           id: duplicated.id,
         },
-        data: {
-          songYoutubeLinkUrl,
-        },
+        data: data,
       });
     }
 
     return await this.prisma.game.create({
-      data: {
-        title,
-        singer,
-        songYoutubeLinkUrl,
-      },
+      data: data,
     });
   }
 
