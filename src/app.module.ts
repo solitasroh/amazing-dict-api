@@ -14,7 +14,7 @@ import { GameModule } from './game/game.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       cors: {
-        origin: 'http://localhost:3001',
+        origin: 'http://localhost:3000',
         credentials: true,
       }
     }),
