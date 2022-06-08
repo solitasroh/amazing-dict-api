@@ -13,6 +13,10 @@ import { GameModule } from './game/game.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      cors: {
+        origin: 'http://localhost:3001',
+        credentials: true,
+      }
     }),
     AuthModule,
     UsersModule,

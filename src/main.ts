@@ -17,11 +17,11 @@ dotenv.config({
 });
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {cors: true});
 
   const prismaService: PrismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
 
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();
