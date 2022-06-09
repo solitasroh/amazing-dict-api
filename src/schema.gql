@@ -19,7 +19,7 @@ type Game {
 }
 
 type Query {
-  game(id: Float!): Game!
+  game(id: Int!): Game!
   games: [Game!]
 }
 
