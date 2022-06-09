@@ -55,7 +55,7 @@ export class GameResolver {
   constructor(private gamesService: GameService) {}
 
   @Query(() => Game, { name: 'game' })
-  game(@Args('id', {type: () => Int}) id: number): Promise<Game> {
+  game(@Args('id', { type: () => Int }) id: number): Promise<Game> {
     return this.gamesService.game(id);
   }
 
