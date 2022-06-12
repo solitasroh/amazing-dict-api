@@ -25,8 +25,8 @@ export class GameCreateInput {
   @Field({ nullable: true })
   postSectionLyrics: string;
 
-  @Field({ nullable: true })
-  questionLyrics: string;
+  @Field(() => [String], { nullable: true })
+  questionLyrics: string[];
 
   @Field({ nullable: true })
   prePlaySection: string;

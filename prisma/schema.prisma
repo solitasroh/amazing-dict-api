@@ -45,12 +45,12 @@ model User {
 }
 
 model Game {
-  id                           Int     @id @default(autoincrement())
+  id                           Int      @id @default(autoincrement())
   title                        String
   singer                       String
   preSectionLyrics             String?
   postSectionLyrics            String?
-  questionLyrics               String?
+  questionLyrics               String[]
   prePlaySection               String?
   preSectionPlayStartTime      Int?
   preSectionPlayEndTime        Int?
