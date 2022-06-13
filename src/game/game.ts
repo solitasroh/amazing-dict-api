@@ -17,8 +17,6 @@ export class Game {
   postSectionLyrics: string;
   @Field(() => [String], { nullable: true })
   questionLyrics: string[];
-  @Field({ nullable: true })
-  prePlaySection: string;
   @Field(() => Int, { nullable: true })
   preSectionPlayStartTime: number;
   @Field(() => Int, { nullable: true })

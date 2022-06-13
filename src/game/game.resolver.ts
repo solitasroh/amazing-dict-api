@@ -28,9 +28,6 @@ export class GameCreateInput {
   @Field(() => [String], { nullable: true })
   questionLyrics: string[];
 
-  @Field({ nullable: true })
-  prePlaySection: string;
-
   @Field(() => Int, { nullable: true })
   preSectionPlayStartTime: number;
 

@@ -51,7 +51,6 @@ model Game {
   preSectionLyrics             String?
   postSectionLyrics            String?
   questionLyrics               String[]
-  prePlaySection               String?
   preSectionPlayStartTime      Int?
   preSectionPlayEndTime        Int?
   questionSectionPlayStartTime Int?
