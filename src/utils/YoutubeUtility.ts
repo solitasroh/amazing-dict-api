@@ -5,7 +5,11 @@ const yt = require('yt-converter');
 const path = require('path');
 import * as fs from 'fs';
 import { S3FileService } from '../s3-file/s3-file.service';
-
+const sleep = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
 export async function makeMp3(
   id: number,
   linkUrl: string,
@@ -39,24 +43,28 @@ export async function makeMp3(
       },
       async () => {
         console.log(pathname);
+        let retryCount = 0;
+        let fileExists = false;
+        while (retryCount++ < 10) {
+          fileExists = fs.existsSync(pathname);
+          console.log('file check..');
+          await sleep(1000);
+        }
 
-        if (fs.existsSync(pathname)) {
-          console.log('file is exists');
-          const list = fs.readdirSync(path.resolve(process.cwd(), 'temp'));
-          if (list.length > 0) {
-            const filePath = path.resolve(process.cwd(), 'temp', list[0]);
+        const list = fs.readdirSync(path.resolve(process.cwd(), 'temp'));
+        if (list.length > 0) {
+          const filePath = path.resolve(process.cwd(), 'temp', list[0]);
 
-            if (fs.existsSync(filePath)) {
-              const service = new S3FileService();
-              const fileLink = await service.uploadAsync(
-                id,
-                infos.title,
-                filePath,
-              );
-              callback(fileLink);
-            }
-            fs.rmSync(filePath);
+          if (fs.existsSync(filePath)) {
+            const service = new S3FileService();
+            const fileLink = await service.uploadAsync(
+              id,
+              infos.title,
+              filePath,
+            );
+            callback(fileLink);
           }
+          fs.rmSync(filePath);
         }
       },
     );

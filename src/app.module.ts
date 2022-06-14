@@ -16,7 +16,7 @@ import { GameModule } from './game/game.module';
       cors: {
         origin: 'http://localhost:3000',
         credentials: true,
-      }
+      },
     }),
     AuthModule,
     UsersModule,
