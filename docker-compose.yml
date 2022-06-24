@@ -1,27 +1,31 @@
 version: "3"
-networks: 
-  app:
-    driver: bridge
+# networks: 
+#   app:
+#     driver: bridge
 services:
   postgres:
     image: postgres:latest
     container_name: postgres
     restart: always
-    hostname: postgres
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: postgres12
-      POSTGRES_DB: server_db
+      POSTGRES_USER: ${DB_USER_ID}
+      POSTGRES_PASSWORD: ${DB_USER_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - ./Database/:/docker-entrypoint-initdb.d/
+
   server:
-    networks:
-      - app
+    # networks:
+    #   - app
     build:
       context: .
     container_name: server
+    # links: 
+    #   - "postgres:"
     ports:
-      - '3001:3001'
+      - "3001:3001"
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules

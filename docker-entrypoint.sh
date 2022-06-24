@@ -2,4 +2,4 @@ dockerize -wait tcp://postgres:5432 -timeout 20s  #
 
 echo "Start server"
 yarn prisma migrate dev --name init  # prisma migrate ½ÇÇà
-npm run start
+npm run start:dev
